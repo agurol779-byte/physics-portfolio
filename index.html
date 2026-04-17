@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali Kemal Gurol | Physics Portal</title>
+    <title>Ali Kemal Gurol | Physics & Science</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,11 +12,11 @@
     <canvas id="particleCanvas"></canvas>
 
     <header class="hero">
+        <div class="top-nav">
+            <button class="nav-btn">TR</button>
+            <button id="theme-btn" class="nav-btn">Dark</button>
+        </div>
         <div class="hero-content">
-            <div class="top-nav">
-                <button class="nav-btn">TR</button>
-                <button id="theme-btn" class="nav-btn">Dark</button>
-            </div>
             <div class="atom-icon">⚛</div>
             <h1>Ali Kemal Gurol</h1>
         </div>
@@ -31,7 +31,8 @@
                 </p>
             </div>
             <p class="description">
-                I am a student who loves physics and is passionate about exploring the laws of the universe.
+                I am a student who loves physics and is passionate about exploring the laws of the universe. 
+                I believe that science is the most powerful tool we have to understand the world around us.
             </p>
         </section>
 
@@ -46,14 +47,14 @@
             </div>
             <div class="admin-form">
                 <input type="text" id="post-title" placeholder="Makale Başlığı">
-                <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: tübitak)">
-                <input type="text" id="post-url" placeholder="Makale URL Adresi">
+                <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: Tübitak, Medium)">
+                <input type="text" id="post-url" placeholder="Makale URL Adresi (https://...)">
                 <button onclick="addArticle()" class="push-btn">Push to Database</button>
             </div>
         </section>
 
         <footer class="footer">
-            <p>// Quantum-encrypted: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
+            <p>// Quantum-encrypted connection: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
         </footer>
     </main>
 

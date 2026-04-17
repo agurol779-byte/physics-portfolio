@@ -1,0 +1,47 @@
+:root {
+    --primary: #00d2ff;
+    --bg: #030712;
+    --card: rgba(17, 24, 39, 0.8);
+    --text: #f3f4f6;
+    --border: rgba(0, 210, 255, 0.2);
+}
+
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --card: rgba(255, 255, 255, 0.9);
+    --text: #0f172a;
+    --border: rgba(30, 64, 175, 0.1);
+}
+
+body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: 'Space Grotesk', sans-serif; transition: 0.5s;
+}
+
+#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+#cursor-dot { width: 6px; height: 6px; background: var(--primary); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+.hero { height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+.atom-icon { font-size: 3rem; color: var(--primary); animation: spin 10s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.section-title { font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin: 2rem 0; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+.article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.article-box {
+    background: var(--card); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px;
+    display: flex; flex-direction: column; transition: 0.3s;
+}
+.article-box:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 5px 20px rgba(0,210,255,0.1); }
+
+.box-header { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--primary); margin-bottom: 0.5rem; }
+.delete-btn { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-top: 15px; font-size: 0.7rem; width: fit-content; }
+
+/* Admin Section */
+.admin-card { background: var(--card); border: 1px dashed var(--primary); padding: 2rem; border-radius: 15px; margin-top: 4rem; }
+.admin-form { display: grid; gap: 10px; }
+.admin-form input { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 12px; border-radius: 8px; color: white; }
+.sci-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+.add-btn { background: var(--primary); color: black; margin-top: 10px; }

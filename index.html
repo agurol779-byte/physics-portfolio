@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Kemal Gurol | Physics Writer & Researcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="cursor-dot"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="atom-icon">⚛</div>
+            <h1>Ali Kemal Gurol</h1>
+            <p class="tagline">Exploring the Universe through Physics & Science Communication</p>
+            <button id="theme-btn" class="sci-btn">Toggle Spectrum</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">Latest Publications</h2>
+        <div class="article-grid" id="articles-grid">
+            <div class="status-msg">Synchronizing with Data Stream...</div>
+        </div>
+
+        <section class="admin-card">
+            <h2 class="section-title">Research Management (Admin)</h2>
+            <div class="admin-form">
+                <input type="text" id="post-title" placeholder="Article Title">
+                <input type="text" id="post-platform" placeholder="Platform (e.g. Medium)">
+                <input type="text" id="post-url" placeholder="Article URL (https://...)">
+                <button onclick="addArticle()" class="sci-btn add-btn">Push to Database</button>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>// Contact: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

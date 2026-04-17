@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali Kemal Gurol | Physics & Science</title>
+    <title>Ali Kemal Gurol | Physics Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <canvas id="particleCanvas"></canvas>
 
     <header class="hero">
         <div class="top-nav">
-            <button class="nav-btn">TR</button>
-            <button id="theme-btn" class="nav-btn">Dark</button>
+            <button id="lang-btn" class="nav-btn">TR</button>
+            <button id="theme-btn" class="nav-btn">Light Mode</button>
         </div>
         <div class="hero-content">
             <div class="atom-icon">⚛</div>
@@ -24,21 +23,20 @@
 
     <main class="container">
         <section class="about-card">
-            <h2>About Me</h2>
+            <h2 id="about-title">About Me</h2>
             <div class="quote-container">
                 <p class="quote">
                     "The most beautiful thing we can experience is the mysterious. It is the source of all true art and science." — Albert Einstein
                 </p>
             </div>
-            <p class="description">
+            <p id="about-desc" class="description">
                 I am a student who loves physics and is passionate about exploring the laws of the universe. 
                 I believe that science is the most powerful tool we have to understand the world around us.
             </p>
         </section>
 
-        <h2 class="section-title">Latest Scientific Logs</h2>
-        <div class="article-grid" id="articles-grid">
-            </div>
+        <h2 id="logs-title" class="section-title">Latest Scientific Logs</h2>
+        <div class="article-grid" id="articles-grid"></div>
 
         <section class="admin-card" id="admin-panel">
             <div class="admin-header">
@@ -46,15 +44,15 @@
                 <div class="header-line"></div>
             </div>
             <div class="admin-form">
-                <input type="text" id="post-title" placeholder="Makale Başlığı">
-                <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: Tübitak, Medium)">
-                <input type="text" id="post-url" placeholder="Makale URL Adresi (https://...)">
+                <input type="text" id="post-title" placeholder="Entry Title">
+                <input type="text" id="post-platform" placeholder="Platform">
+                <input type="text" id="post-url" placeholder="URL">
                 <button onclick="addArticle()" class="push-btn">Push to Database</button>
             </div>
         </section>
 
         <footer class="footer">
-            <p>// Quantum-encrypted connection: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
+            <p>// Quantum-encrypted: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
         </footer>
     </main>
 

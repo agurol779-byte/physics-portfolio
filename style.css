@@ -2,56 +2,247 @@
     /* Dark Mode (Default) */
     --bg: #0a0a0a;
     --hero-bg: #111111;
-    --card-bg: #1a1a1a; /* Dark modda kart siyahımsı */
+    --card-bg: #1a1a1a;
     --text: #f3f4f6;
     --text-dim: #9ca3af;
-    --primary: #00d2ff;
+    --primary: #00d2ff; /* Mavi renk */
     --border: rgba(0, 210, 255, 0.2);
+    
+    /* Arka plan formülleri için renk (Dark modda belirgin mavi) */
+    --formula-color: rgba(0, 210, 255, 0.2);
 }
 
 [data-theme="light"] {
     /* Light Mode */
     --bg: #f8fafc;
     --hero-bg: #e2e8f0;
-    --card-bg: #ffffff; /* Light modda kart beyaz */
+    --card-bg: #ffffff;
     --text: #0f172a;
     --text-dim: #475569;
     --border: rgba(0, 210, 255, 0.4);
+
+    /* Arka plan formülleri için renk (Light modda daha soft mavi) */
+    --formula-color: rgba(0, 150, 255, 0.1);
 }
 
 body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: 'Space Grotesk', sans-serif; transition: background 0.4s, color 0.4s;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    transition: background 0.4s, color 0.4s;
+    overflow-x: hidden;
 }
 
-#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; }
-.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+/* Arka Plandaki Formüllerin Canvas'ı */
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Her şeyin arkasında kalmalı */
+    pointer-events: none; /* Mouse ile etkileşime girmesin */
+}
 
-/* Hero */
-.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; position: relative; }
-.top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
-.nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1; /* Arka plandan önde dursun */
+}
 
-/* ABOUT CARD - Siyah/Beyaz Değişimi Burada */
+/* HEADER & HERO */
+.hero {
+    background: var(--hero-bg);
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+}
+
+.top-nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid var(--text);
+    color: var(--text);
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* BÜYÜK VE BELİRGİN ATOM İŞARETİ */
+.atom-icon-large {
+    font-size: 5rem; /* Büyük boyut */
+    color: var(--primary);
+    animation: atomSpin 15s linear infinite; /* Yavaş dönsün */
+    text-shadow: 0 0 20px var(--primary); /* Neon parlama efekti */
+}
+
+@keyframes atomSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.main-title {
+    font-size: 3.5rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+/* ABOUT CARD */
 .about-card {
     background: var(--card-bg);
     color: var(--text);
     border-radius: 15px;
-    padding: 40px;
-    margin-top: -50px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 45px;
+    margin-top: -60px; /* Hero'nun üzerine binmesi için */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     border: 1px solid var(--border);
     transition: 0.4s ease;
 }
 
-.quote-container { border-left: 4px solid var(--primary); padding-left: 20px; margin: 20px 0; }
-.quote { font-style: italic; color: var(--text-dim); }
-.description { color: var(--text); opacity: 0.9; }
+.quote-container {
+    border-left: 5px solid var(--primary);
+    padding-left: 25px;
+    margin: 30px 0;
+}
 
-/* Diğerleri */
-.section-title { color: var(--primary); text-transform: uppercase; margin-top: 50px; font-size: 0.9rem; letter-spacing: 2px; }
-.article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.article-box { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 12px; }
+.quote {
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+}
 
-.admin-card { display: none; background: var(--bg); border: 2px dashed var(--primary); padding: 30px; border-radius: 20px; margin-top: 50px; }
-.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.description {
+    font-size: 1.1rem;
+    color: var(--text);
+    opacity: 0.9;
+    margin-top: 25px;
+}
+
+/* ARTICLES */
+.section-title {
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-top: 60px;
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.section-title::after { content:""; flex: 1; height: 1px; background: var(--formula-color); }
+
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.article-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 12px;
+    transition: 0.4s;
+}
+
+.article-box:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,210,255,0.1);
+}
+
+.box-header {
+    font-family: 'JetBrains Mono';
+    font-size: 0.75rem;
+    color: var(--primary);
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+/* ADMIN PANEL (Dashed Style) */
+.admin-card {
+    display: none;
+    background: var(--bg);
+    border: 2px dashed var(--primary);
+    border-radius: 25px;
+    padding: 45px;
+    margin-top: 70px;
+}
+
+.admin-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+.admin-title { font-family: 'JetBrains Mono'; color: var(--primary); font-weight: bold; }
+.header-line { height: 1px; background: var(--formula-color); flex: 1; }
+
+.admin-form input {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 15px;
+    background: var(--hero-bg);
+    border: 1px solid #333;
+    color: var(--text);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+[data-theme="light"] .admin-form input { border: 1px solid #ccc; color: #000; }
+
+.push-btn {
+    width: 100%;
+    background: var(--primary);
+    color: #000;
+    border: none;
+    padding: 20px;
+    border-radius: 50px;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.push-btn:hover {
+    box-shadow: 0 0 30px rgba(0,210,255,0.5);
+    transform: scale(1.01);
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    opacity: 0.6;
+}
+
+.footer { text-align: center; padding: 60px; margin-top: 80px; border-top: 1px solid var(--border); opacity: 0.5; font-size: 0.8rem; font-family: 'JetBrains Mono'; }

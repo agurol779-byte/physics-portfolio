@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali Kemal Gurol | Physics & Science Portal</title>
+    <title>Ali Kemal Gurol | Physics Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -23,21 +23,30 @@
     <main class="container">
         <h2 class="section-title">Latest Scientific Logs</h2>
         <div class="article-grid" id="articles-grid">
-            <div class="status-msg">Initiating data stream...</div>
-        </div>
+            </div>
 
         <section class="admin-card" id="admin-panel">
-            <h2 class="section-title">Command Center (Authorized Only)</h2>
+            <div class="admin-header">
+                <span class="admin-title">RESEARCH MANAGEMENT (ADMIN)</span>
+                <div class="header-line"></div>
+            </div>
+            
             <div class="admin-form">
-                <input type="text" id="post-title" placeholder="Entry Title">
-                <input type="text" id="post-platform" placeholder="Platform (e.g. Medium)">
-                <input type="text" id="post-url" placeholder="Secure URL (https://...)">
-                <button onclick="addArticle()" class="sci-btn add-btn">Push to Cloud</button>
+                <div class="input-group">
+                    <input type="text" id="post-title" placeholder="Makale Başlığı">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: Medium, Tübitak)">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="post-url" placeholder="Makale URL Adresi (https://...)">
+                </div>
+                <button onclick="addArticle()" class="push-btn">Push to Database</button>
             </div>
         </section>
 
         <footer class="footer">
-            <p>// Quantum-encrypted connection: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
+            <p>// Quantum-encrypted: <a href="mailto:agurol779@gmail.com">agurol779@gmail.com</a></p>
         </footer>
     </main>
 

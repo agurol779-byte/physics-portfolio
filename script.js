@@ -1,7 +1,7 @@
 // --- DATABASE CONFIG ---
 const BIN_ID = '69e2503736566621a8c3e82c';
 const MASTER_KEY = '$2a$10$KckvLL9WKnatkXlZ699Xe.g5zJRFDZ5HYns2ndYDqL6uONzlp69cy';
-const ADMIN_PASS = "physics123"; // PANELİ AÇINCA EKLEME YAPMAK İÇİN ŞİFREN
+const ADMIN_PASS = "2903"; // PANELİ AÇINCA EKLEME YAPMAK İÇİN ŞİFREN
 
 let articles = [];
 

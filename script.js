@@ -1,84 +1,73 @@
-// --- CONFIGURATION ---
+// --- DATABASE CONFIG ---
 const BIN_ID = '69e2503736566621a8c3e82c';
 const MASTER_KEY = '$2a$10$KckvLL9WKnatkXlZ699Xe.g5zJRFDZ5HYns2ndYDqL6uONzlp69cy';
-const ADMIN_PASSWORD = "fizik"; // İstediğin şifreyi buraya yaz (Arkadaşın bilmesin!)
+const ADMIN_PASS = "physics123"; // PANELİ AÇINCA EKLEME YAPMAK İÇİN ŞİFREN
 
 let articles = [];
 
-// 1. DATA ÇEKME (Her cihazda çalışması için)
+// 1. Fetch Global Data
 async function loadData() {
-    const grid = document.getElementById('articles-grid');
     try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
             headers: { 'X-Master-Key': MASTER_KEY }
         });
-        const data = await response.json();
-        
-        // JSONBin bazen veriyi 'record' içinde bazen direkt gönderir
-        articles = data.record ? data.record : data;
+        const data = await res.json();
+        articles = data.record || [];
         render();
     } catch (e) {
-        grid.innerHTML = `<div style="color:red">Connection Error: Data stream lost.</div>`;
+        document.getElementById('articles-grid').innerHTML = "Signal Lost. Database unreachable.";
     }
 }
 
-// 2. EKRANA BASMA
+// 2. Render to Interface
 function render() {
     const grid = document.getElementById('articles-grid');
-    grid.innerHTML = "";
+    grid.innerHTML = articles.length === 0 ? "No archives found in this sector." : "";
     
     articles.forEach((art, index) => {
         grid.insertAdjacentHTML('beforeend', `
             <div class="article-box">
-                <div class="box-header">// DATA_SOURCE: ${art.p || 'Science'}</div>
+                <div class="box-header">// LOG_ID: ${art.p || 'Global'}</div>
                 <h3>${art.t}</h3>
-                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-size:0.9rem">READ_LOG →</a>
-                <button onclick="deleteArticle(${index})" class="delete-btn">ERASE DATA</button>
+                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:500;">ACCESS_LOG →</a>
+                <button onclick="deleteArticle(${index})" class="delete-btn">ERASE_DATA</button>
             </div>
         `);
     });
 }
 
-// 3. YAZI EKLEME (Şifreli ve Garantili)
+// 3. Add Article (Cloud Sync)
 async function addArticle() {
-    const userPass = prompt("Enter Authorization Code to Push Data:");
-    if (userPass !== ADMIN_PASSWORD) {
-        alert("ACCESS DENIED: Unauthorized biological entity detected.");
-        return;
-    }
+    const check = prompt("System Access Key:");
+    if (check !== ADMIN_PASS) return alert("UNAUTHORIZED BIOLOGICAL ENTITY!");
 
     const t = document.getElementById('post-title').value;
     const p = document.getElementById('post-platform').value;
     const u = document.getElementById('post-url').value;
 
-    if(!t || !u) return alert("Title and URL are mandatory!");
+    if(!t || !u) return alert("Metadata incomplete!");
 
-    // Yeni veriyi listeye ekle
-    const newEntry = { t, p, u };
-    articles.push(newEntry);
+    articles.push({ t, p, u });
+    await sync();
     
-    // Buluta gönder
-    await syncToCloud();
-    
-    // Formu temizle
     document.getElementById('post-title').value = "";
     document.getElementById('post-platform').value = "";
     document.getElementById('post-url').value = "";
 }
 
-// 4. YAZI SİLME (Şifreli)
+// 4. Delete Article
 async function deleteArticle(index) {
-    const userPass = prompt("Enter Authorization Code to Delete Data:");
-    if (userPass !== ADMIN_PASSWORD) return alert("Delete operation aborted.");
+    const check = prompt("Confirm Deletion Key:");
+    if (check !== ADMIN_PASS) return alert("Deletion aborted.");
     
     articles.splice(index, 1);
-    await syncToCloud();
+    await sync();
 }
 
-// 5. BULUTLA EŞİTLEME (PÜF NOKTASI BURASI)
-async function syncToCloud() {
+// 5. Cloud Sync Engine
+async function sync() {
     try {
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,37 +75,52 @@ async function syncToCloud() {
             },
             body: JSON.stringify(articles)
         });
-
-        if(response.ok) {
-            alert("DATABASE UPDATED: Signal broadcasted to all devices!");
+        if(res.ok) {
+            alert("BROADCAST SUCCESSFUL: Data synchronized across all nodes.");
             render();
-        } else {
-            alert("SYNC FAILED: Check Master Key or JSONBin status.");
         }
-    } catch (e) {
-        alert("CRITICAL: Network interference. Try again.");
-    }
+    } catch (e) { alert("Sync Interrupted."); }
 }
 
-// --- VISUALS ---
+// --- GİZLİ PANEL KONTROLÜ ---
+// Klavyeden 'L' (Login) tuşuna bastığında admin paneli açılır/kapanır
+window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'l') {
+        const panel = document.getElementById('admin-panel');
+        const isHidden = window.getComputedStyle(panel).display === 'none';
+        panel.style.display = isHidden ? 'block' : 'none';
+        if(isHidden) window.scrollTo(0, document.body.scrollHeight);
+    }
+});
+
+// --- VISUAL ENGINE ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let pts = [];
 function init() {
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     pts = [];
-    for(let i=0; i<30; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, v:Math.random()*0.5+0.1});
+    for(let i=0; i<40; i++) pts.push({
+        x: Math.random()*canvas.width, 
+        y: Math.random()*canvas.height, 
+        v: Math.random()*0.4+0.1,
+        f: ["E=mc²", "F=ma", "Ψ", "h", "c", "λ"][Math.floor(Math.random()*6)]
+    });
 }
 function animate() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
-    pts.forEach(p => { ctx.fillText("E=mc²", p.x, p.y); p.y -= p.v; if(p.y < 0) p.y = canvas.height; });
+    ctx.font = "10px monospace";
+    pts.forEach(p => {
+        ctx.fillText(p.f, p.x, p.y);
+        p.y -= p.v;
+        if(p.y < 0) p.y = canvas.height;
+    });
     requestAnimationFrame(animate);
 }
+
 window.onload = () => { init(); animate(); loadData(); };
 window.onresize = init;
-
-// THEME
 document.getElementById('theme-btn').onclick = () => {
     const cur = document.documentElement.getAttribute('data-theme');
     document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');

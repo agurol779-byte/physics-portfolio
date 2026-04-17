@@ -1,62 +1,84 @@
+// --- CONFIGURATION ---
 const BIN_ID = '69e2503736566621a8c3e82c';
 const MASTER_KEY = '$2a$10$KckvLL9WKnatkXlZ699Xe.g5zJRFDZ5HYns2ndYDqL6uONzlp69cy';
-const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const ADMIN_PASSWORD = "fizik"; // İstediğin şifreyi buraya yaz (Arkadaşın bilmesin!)
 
 let articles = [];
 
-// 1. Fetch Articles
+// 1. DATA ÇEKME (Her cihazda çalışması için)
 async function loadData() {
+    const grid = document.getElementById('articles-grid');
     try {
-        const response = await fetch(`${API_URL}/latest`, {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
             headers: { 'X-Master-Key': MASTER_KEY }
         });
         const data = await response.json();
-        articles = data.record || [];
+        
+        // JSONBin bazen veriyi 'record' içinde bazen direkt gönderir
+        articles = data.record ? data.record : data;
         render();
-    } catch (e) { console.error("Data Stream Interrupted"); }
+    } catch (e) {
+        grid.innerHTML = `<div style="color:red">Connection Error: Data stream lost.</div>`;
+    }
 }
 
-// 2. Render to Screen
+// 2. EKRANA BASMA
 function render() {
     const grid = document.getElementById('articles-grid');
-    grid.innerHTML = articles.length === 0 ? "No records found." : "";
+    grid.innerHTML = "";
     
     articles.forEach((art, index) => {
         grid.insertAdjacentHTML('beforeend', `
             <div class="article-box">
-                <div class="box-header">// SOURCE: ${art.p}</div>
+                <div class="box-header">// DATA_SOURCE: ${art.p || 'Science'}</div>
                 <h3>${art.t}</h3>
-                <a href="${art.u}" target="_blank" style="color:var(--primary); font-size:0.9rem; text-decoration:none">Read Article →</a>
-                <button onclick="deleteArticle(${index})" class="delete-btn">REMOVE DATA</button>
+                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-size:0.9rem">READ_LOG →</a>
+                <button onclick="deleteArticle(${index})" class="delete-btn">ERASE DATA</button>
             </div>
         `);
     });
 }
 
-// 3. Add Article
+// 3. YAZI EKLEME (Şifreli ve Garantili)
 async function addArticle() {
+    const userPass = prompt("Enter Authorization Code to Push Data:");
+    if (userPass !== ADMIN_PASSWORD) {
+        alert("ACCESS DENIED: Unauthorized biological entity detected.");
+        return;
+    }
+
     const t = document.getElementById('post-title').value;
     const p = document.getElementById('post-platform').value;
     const u = document.getElementById('post-url').value;
 
-    if(!t || !u) return alert("System requires Title and URL.");
+    if(!t || !u) return alert("Title and URL are mandatory!");
 
-    articles.push({ t, p, u });
-    await sync();
-    document.querySelectorAll('.admin-form input').forEach(i => i.value = "");
+    // Yeni veriyi listeye ekle
+    const newEntry = { t, p, u };
+    articles.push(newEntry);
+    
+    // Buluta gönder
+    await syncToCloud();
+    
+    // Formu temizle
+    document.getElementById('post-title').value = "";
+    document.getElementById('post-platform').value = "";
+    document.getElementById('post-url').value = "";
 }
 
-// 4. Delete Article
+// 4. YAZI SİLME (Şifreli)
 async function deleteArticle(index) {
-    if(!confirm("Confirm permanent data deletion?")) return;
+    const userPass = prompt("Enter Authorization Code to Delete Data:");
+    if (userPass !== ADMIN_PASSWORD) return alert("Delete operation aborted.");
+    
     articles.splice(index, 1);
-    await sync();
+    await syncToCloud();
 }
 
-// 5. Sync to JSONBin
-async function sync() {
+// 5. BULUTLA EŞİTLEME (PÜF NOKTASI BURASI)
+async function syncToCloud() {
     try {
-        await fetch(API_URL, {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,46 +86,37 @@ async function sync() {
             },
             body: JSON.stringify(articles)
         });
-        render();
-    } catch (e) { alert("Sync Failed!"); }
+
+        if(response.ok) {
+            alert("DATABASE UPDATED: Signal broadcasted to all devices!");
+            render();
+        } else {
+            alert("SYNC FAILED: Check Master Key or JSONBin status.");
+        }
+    } catch (e) {
+        alert("CRITICAL: Network interference. Try again.");
+    }
 }
 
-// --- Visual Background ---
+// --- VISUALS ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let pts = [];
-const formulas = ["E=mc²", "Ψ", "ΔxΔp≥h/4π", "F=ma", "c=λf"];
-
-function initCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+function init() {
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     pts = [];
-    for(let i=0; i<40; i++) pts.push({
-        x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-        v: Math.random()*0.5+0.1, f: formulas[Math.floor(Math.random()*formulas.length)]
-    });
+    for(let i=0; i<30; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, v:Math.random()*0.5+0.1});
 }
-
 function animate() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
-    ctx.font = "12px monospace";
-    pts.forEach(p => {
-        ctx.fillText(p.f, p.x, p.y);
-        p.y -= p.v;
-        if(p.y < -20) p.y = canvas.height + 20;
-    });
+    pts.forEach(p => { ctx.fillText("E=mc²", p.x, p.y); p.y -= p.v; if(p.y < 0) p.y = canvas.height; });
     requestAnimationFrame(animate);
 }
+window.onload = () => { init(); animate(); loadData(); };
+window.onresize = init;
 
-const dot = document.getElementById('cursor-dot');
-window.addEventListener('mousemove', (e) => {
-    dot.style.left = e.clientX + 'px';
-    dot.style.top = e.clientY + 'px';
-});
-
-window.onload = () => { initCanvas(); animate(); loadData(); };
-window.onresize = initCanvas;
+// THEME
 document.getElementById('theme-btn').onclick = () => {
     const cur = document.documentElement.getAttribute('data-theme');
     document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');

@@ -1,14 +1,14 @@
 :root {
     --primary: #00d2ff;
     --bg: #030712;
-    --card: rgba(17, 24, 39, 0.9);
+    --card: rgba(17, 24, 39, 0.8);
     --text: #f3f4f6;
     --border: rgba(0, 210, 255, 0.2);
 }
 
 [data-theme="light"] {
     --bg: #f8fafc;
-    --card: rgba(255, 255, 255, 0.95);
+    --card: rgba(255, 255, 255, 0.9);
     --text: #0f172a;
     --border: rgba(0, 210, 255, 0.3);
 }
@@ -22,35 +22,73 @@ body {
 
 .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
 
-.hero { height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-.atom-icon { font-size: 3.5rem; color: var(--primary); animation: spin 12s linear infinite; margin-bottom: 1rem; }
+/* Hero & Header */
+.hero { height: 35vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+.atom-icon { font-size: 3.5rem; color: var(--primary); animation: spin 15s linear infinite; margin-bottom: 1rem; text-shadow: 0 0 15px var(--primary); }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .section-title { font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin: 3rem 0 1.5rem; display: flex; align-items: center; gap: 15px; }
 .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
+/* Article Cards */
 .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
 .article-box {
-    background: var(--card); border: 1px solid var(--border); padding: 1.8rem; border-radius: 12px;
-    display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    backdrop-filter: blur(10px);
+    background: var(--card); border: 1px solid var(--border); padding: 1.8rem; border-radius: 15px;
+    display: flex; flex-direction: column; transition: 0.4s ease; backdrop-filter: blur(8px);
 }
-.article-box:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,210,255,0.15); }
+.article-box:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,210,255,0.1); }
+.box-header { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--primary); opacity: 0.6; margin-bottom: 10px; }
 
-.box-header { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--primary); opacity: 0.7; margin-bottom: 0.8rem; }
-.delete-btn { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; margin-top: 20px; font-size: 0.7rem; align-self: flex-start; opacity: 0.5; transition: 0.3s; }
-.delete-btn:hover { opacity: 1; transform: scale(1.05); }
+/* PNG STİLİ: ADMİN PANELİ */
+.admin-card {
+    display: none; /* '1' tuşuyla açılacak */
+    background: rgba(3, 7, 18, 0.95);
+    border: 1.5px dashed var(--primary); /* Kesikli çizgiler */
+    border-radius: 25px;
+    padding: 40px;
+    margin-top: 60px;
+    box-shadow: 0 0 30px rgba(0, 210, 255, 0.05);
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-/* Hidden Admin Section */
-.admin-card { display: none; background: var(--card); border: 2px dashed var(--primary); padding: 2.5rem; border-radius: 20px; margin-top: 5rem; animation: fadeIn 0.5s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-.admin-form { display: grid; gap: 12px; }
-.admin-form input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: white; outline: none; transition: 0.3s; }
-.admin-form input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+.admin-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+.admin-title { font-family: 'JetBrains Mono'; color: var(--primary); font-weight: bold; letter-spacing: 2px; font-size: 0.9rem; }
+.header-line { height: 1px; background: rgba(0, 210, 255, 0.2); flex: 1; }
 
-.sci-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-.sci-btn:hover { background: var(--primary); color: black; box-shadow: 0 0 15px var(--primary); }
-.add-btn { background: var(--primary); color: black; margin-top: 15px; }
+.admin-form input {
+    width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 12px;
+    padding: 16px 20px; color: white; margin-bottom: 15px;
+    font-family: 'Space Grotesk', sans-serif; transition: 0.3s;
+}
 
-.footer { margin-top: 5rem; padding: 2rem; text-align: center; border-top: 1px solid var(--border); opacity: 0.6; font-size: 0.8rem; }
+.admin-form input:focus {
+    border-color: var(--primary); background: rgba(0, 210, 255, 0.05);
+    outline: none; box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+}
+
+/* PNG STİLİ: NEON MAVİ BUTON */
+.push-btn {
+    width: 100%; background: var(--primary); color: #000;
+    border: none; padding: 18px; border-radius: 50px;
+    font-weight: 800; font-size: 1rem; cursor: pointer;
+    transition: 0.4s; margin-top: 10px; text-transform: uppercase;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.push-btn:hover {
+    background: #00b8e6;
+    box-shadow: 0 0 35px rgba(0, 210, 255, 0.6);
+    transform: scale(1.02);
+}
+
+.sci-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
+.delete-btn { background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; margin-top: 15px; font-size: 0.7rem; align-self: flex-start; opacity: 0.5; }
+.delete-btn:hover { opacity: 1; }
+
+.footer { margin-top: 6rem; padding: 2rem; text-align: center; border-top: 1px solid var(--border); opacity: 0.5; font-size: 0.75rem; font-family: 'JetBrains Mono'; }

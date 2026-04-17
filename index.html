@@ -13,14 +13,28 @@
 
     <header class="hero">
         <div class="hero-content">
+            <div class="top-nav">
+                <button class="nav-btn">TR</button>
+                <button id="theme-btn" class="nav-btn">Dark</button>
+            </div>
             <div class="atom-icon">⚛</div>
             <h1>Ali Kemal Gurol</h1>
-            <p class="tagline">Theoretical Physics & Science Communication</p>
-            <button id="theme-btn" class="sci-btn">Switch Spectrum</button>
         </div>
     </header>
 
     <main class="container">
+        <section class="about-card">
+            <h2>About Me</h2>
+            <div class="quote-container">
+                <p class="quote">
+                    "The most beautiful thing we can experience is the mysterious. It is the source of all true art and science." — Albert Einstein
+                </p>
+            </div>
+            <p class="description">
+                I am a student who loves physics and is passionate about exploring the laws of the universe.
+            </p>
+        </section>
+
         <h2 class="section-title">Latest Scientific Logs</h2>
         <div class="article-grid" id="articles-grid">
             </div>
@@ -30,17 +44,10 @@
                 <span class="admin-title">RESEARCH MANAGEMENT (ADMIN)</span>
                 <div class="header-line"></div>
             </div>
-            
             <div class="admin-form">
-                <div class="input-group">
-                    <input type="text" id="post-title" placeholder="Makale Başlığı">
-                </div>
-                <div class="input-group">
-                    <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: Medium, Tübitak)">
-                </div>
-                <div class="input-group">
-                    <input type="text" id="post-url" placeholder="Makale URL Adresi (https://...)">
-                </div>
+                <input type="text" id="post-title" placeholder="Makale Başlığı">
+                <input type="text" id="post-platform" placeholder="Yayınlanan Platform (örn: tübitak)">
+                <input type="text" id="post-url" placeholder="Makale URL Adresi">
                 <button onclick="addArticle()" class="push-btn">Push to Database</button>
             </div>
         </section>

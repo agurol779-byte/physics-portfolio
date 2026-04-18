@@ -6,21 +6,11 @@ let articles = [];
 let currentLang = 'en';
 
 const translations = {
-    en: { 
-        about: "About Me", 
-        logs: "My popular science articles", 
-        desc: "I am a student who loves physics and is passionate about exploring the laws of the universe. I believe that science is the most powerful tool we have to understand the world around us.", 
-        theme: "Light Mode" 
-    },
-    tr: { 
-        about: "Hakkımda", 
-        logs: "Popüler Bilim Makalelerim", 
-        desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim. Bilimin, etrafımızdaki dünyayı anlamak için sahip olduğumuz en güçlü araç olduğuna inanıyorum.", 
-        theme: "Gündüz Modu" 
-    }
+    en: { about: "About Me", logs: "My popular science articles", contact: "Contact & Professional Network", theme: "Light Mode" },
+    tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ", theme: "Gündüz Modu" }
 };
 
-// --- ARKA PLAN (Sakin Süzülme) ---
+// --- ARKA PLAN MOTORU ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let formulas = [];
@@ -29,13 +19,13 @@ function initParticles() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     formulas = [];
-    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ", "Gμν"];
+    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ"];
     for(let i=0; i<35; i++) {
         formulas.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             text: list[Math.floor(Math.random()*list.length)],
-            v: Math.random() * 0.2 + 0.1 // Çok yavaş hareket
+            v: Math.random() * 0.2 + 0.1
         });
     }
 }
@@ -53,7 +43,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- TEMA VE DİL ---
+// --- KONTROLLER ---
 document.getElementById('theme-btn').onclick = function() {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
@@ -66,10 +56,10 @@ document.getElementById('lang-btn').onclick = function() {
     this.innerText = currentLang === 'en' ? 'TR' : 'EN';
     document.getElementById('about-title').innerText = translations[currentLang].about;
     document.getElementById('logs-title').innerText = translations[currentLang].logs;
-    document.getElementById('about-desc').innerText = translations[currentLang].desc;
+    document.querySelector('.footer-title').innerText = translations[currentLang].contact;
 };
 
-// --- VERİTABANI İŞLEMLERİ ---
+// --- DATABASE ---
 async function loadData() {
     try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -78,7 +68,7 @@ async function loadData() {
         const data = await res.json();
         articles = data.record || [];
         render();
-    } catch (e) { console.error("Load failed"); }
+    } catch (e) { console.error("API Error"); }
 }
 
 function render() {
@@ -87,21 +77,20 @@ function render() {
     articles.forEach((art, index) => {
         grid.insertAdjacentHTML('beforeend', `
             <div class="article-box">
-                <div style="font-family:monospace; font-size:0.7rem; color:var(--primary); opacity:0.6; margin-bottom:10px;">// SOURCE: ${art.p || 'Physics'}</div>
+                <div style="font-family:monospace; font-size:0.7rem; color:var(--primary); opacity:0.6; margin-bottom:10px;">// ${art.p || 'Physics'}</div>
                 <h3 style="margin:0 0 15px 0;">${art.t}</h3>
-                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold; font-size:0.9rem;">READ_ARTICLE →</a>
-                <button onclick="deleteArticle(${index})" style="display:block; background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.6rem; margin-top:15px; opacity:0.4;">[ERASE]</button>
+                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold;">READ_ARTICLE →</a>
+                <button onclick="deleteArticle(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.6rem; display:block; margin-top:15px; opacity:0.3;">[ERASE]</button>
             </div>
         `);
     });
 }
 
-// --- GİZLİ PANEL VE DİĞERLERİ ---
+// GİZLİ PANEL
 window.addEventListener('keydown', (e) => {
     if (e.key === '1') {
         const panel = document.getElementById('admin-panel');
         panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        if(panel.style.display === 'block') panel.scrollIntoView({ behavior: 'smooth' });
     }
 });
 

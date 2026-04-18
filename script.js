@@ -5,40 +5,56 @@ const ADMIN_PASS = "physics123";
 let articles = [];
 let currentLang = 'en';
 
-const translations = {
-    en: { about: "About Me", logs: "Articles", school: "Bilkent Erzurum Laboratory School (BELS)", status: "Student & Researcher", follow: "FOLLOW +", desc: "Physics enthusiast exploring the universe." },
-    tr: { about: "Hakkımda", logs: "Makalelerim", school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)", status: "Öğrenci & Araştırmacı", follow: "TAKİP ET +", desc: "Evreni keşfetmeye tutkulu bir fizik meraklısı." }
-};
+// --- ARKA PLAN (FORMÜL SİSTEMİ) ---
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let formulas = [];
 
-// --- SİSTEM ---
-function updateLanguage() {
-    const t = translations[currentLang];
-    document.getElementById('about-title').innerText = t.about;
-    document.getElementById('logs-title').innerText = t.logs;
-    document.getElementById('about-desc').innerText = t.desc;
-    document.getElementById('edu-school').innerText = t.school;
-    document.getElementById('edu-status').innerText = t.status;
-    document.getElementById('follow-btn').innerText = t.follow;
-    document.getElementById('lang-btn').innerText = currentLang === 'en' ? 'TR' : 'EN';
+function initParticles() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    formulas = [];
+    // Fizik Formülleri Listesi
+    const list = ["E=mc²", "F=ma", "Ψ", "∇×B=μ₀J", "ΔxΔp≥ħ/2", "PV=nRT", "S=klnW", "Gμν=8πGTμν", "c²", "λ=h/p", "ħ", "∮B·dA=0"];
+    
+    // 100 tane formül oluştur (Sayıyı artırdım)
+    for(let i=0; i<100; i++) {
+        formulas.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            text: list[Math.floor(Math.random()*list.length)],
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            fontSize: Math.floor(Math.random() * 12 + 16)
+        });
+    }
 }
 
-document.getElementById('theme-btn').onclick = () => {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('theme-btn').innerText = isDark ? "Dark Mode" : "Light Mode";
-};
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    ctx.fillStyle = primaryColor;
+    ctx.globalAlpha = 0.5;
 
-document.getElementById('lang-btn').onclick = () => { currentLang = currentLang === 'en' ? 'tr' : 'en'; updateLanguage(); };
+    formulas.forEach(f => {
+        ctx.font = `bold ${f.fontSize}px 'JetBrains Mono'`;
+        ctx.fillText(f.text, f.x, f.y);
+        f.x += f.vx; f.y += f.vy;
+        
+        if (f.x < -50) f.x = canvas.width + 50;
+        if (f.x > canvas.width + 50) f.x = -50;
+        if (f.y < -50) f.y = canvas.height + 50;
+        if (f.y > canvas.height + 50) f.y = -50;
+    });
+    requestAnimationFrame(animate);
+}
 
-// --- VERİ ---
+// --- VERİ VE SİSTEM ---
 async function loadData() {
-    try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
-        const data = await res.json();
-        articles = Array.isArray(data.record) ? data.record : [];
-        render();
-    } catch (e) { console.error("Load failed"); }
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+    const data = await res.json();
+    articles = Array.isArray(data.record) ? data.record : [];
+    render();
 }
 
 function render() {
@@ -48,7 +64,7 @@ function render() {
         grid.insertAdjacentHTML('beforeend', `
             <div class="article-box">
                 <h3>${art.t}</h3>
-                <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold;">READ →</a>
+                <a href="${art.u}" target="_blank" style="color:var(--primary); font-weight:bold;">READ ARTICLE →</a>
                 <button onclick="deleteArticle(${i})" class="delete-btn">ERASE</button>
             </div>
         `);
@@ -68,7 +84,7 @@ async function addArticle() {
 }
 
 async function deleteArticle(index) {
-    if(prompt("Admin Key:") !== ADMIN_PASS) return;
+    if(prompt("Pass to Delete:") !== ADMIN_PASS) return;
     articles.splice(index, 1);
     await sync();
 }
@@ -82,5 +98,20 @@ async function sync() {
     render();
 }
 
-window.addEventListener('keydown', (e) => { if(e.key === '1') { const p = document.getElementById('admin-panel'); p.style.display = p.style.display==='none'?'block':'none'; } });
-window.onload = () => { loadData(); updateLanguage(); };
+// Klavye Kısayolu
+window.addEventListener('keydown', (e) => {
+    if(e.key === '1') {
+        const p = document.getElementById('admin-panel');
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+});
+
+document.getElementById('theme-btn').onclick = () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme-btn').innerText = isDark ? "Dark Mode" : "Light Mode";
+};
+
+window.onload = () => { initParticles(); animate(); loadData(); };
+window.onresize = initParticles;

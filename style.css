@@ -1,89 +1,39 @@
 :root {
-    --bg: #0a0a0a;
-    --hero-bg: #111111;
-    --card-bg: #1a1a1a;
-    --text: #f3f4f6;
-    --text-dim: #9ca3af;
-    --primary: #00d2ff;
-    --border: rgba(0, 210, 255, 0.2);
-    --formula-color: rgba(0, 210, 255, 0.12);
+    --bg: #0a0a0a; --hero-bg: #111111; --card-bg: #1a1a1a;
+    --text: #f3f4f6; --text-dim: #9ca3af; --primary: #00d2ff;
+    --border: rgba(0, 210, 255, 0.2); --formula-color: rgba(0, 210, 255, 0.12);
 }
 
 [data-theme="light"] {
-    --bg: #ffffff;
-    --hero-bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text: #1a1a1a;
-    --text-dim: #4b5563;
-    --border: rgba(0, 210, 255, 0.3);
+    --bg: #ffffff; --hero-bg: #f8fafc; --card-bg: #ffffff;
+    --text: #1a1a1a; --text-dim: #4b5563; --border: rgba(0, 210, 255, 0.3);
     --formula-color: rgba(0, 150, 255, 0.08);
 }
 
-body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: 'Space Grotesk', sans-serif; transition: 0.4s ease;
-    overflow-x: hidden;
-}
-
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.4s; overflow-x: hidden; }
 #particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; }
-
 .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
-/* HERO & ATOM */
 .hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative;}
 .top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
 .nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
 
-.atom-icon-main {
-    font-size: 6.5rem;
-    color: var(--primary);
-    text-shadow: 0 0 25px var(--primary);
-    transition: 0.5s ease;
-    margin-bottom: 15px;
-    display: inline-block;
-}
-.atom-icon-main:hover {
-    animation: atomVibration 0.1s infinite;
-    text-shadow: 0 0 45px var(--primary);
-    transform: scale(1.08);
-}
-@keyframes atomVibration {
-    0% { transform: translate(0,0); }
-    33% { transform: translate(1px, -1px); }
-    66% { transform: translate(-1px, 1px); }
-    100% { transform: translate(0,0); }
-}
+.atom-icon-main { font-size: 6.5rem; color: var(--primary); text-shadow: 0 0 25px var(--primary); transition: 0.5s; margin-bottom: 15px; display: inline-block; cursor: default; }
+.atom-icon-main:hover { animation: atomVibration 0.1s infinite; transform: scale(1.08); }
+@keyframes atomVibration { 0% { transform: translate(0,0); } 33% { transform: translate(1px, -1px); } 66% { transform: translate(-1px, 1px); } 100% { transform: translate(0,0); } }
 
-/* ABOUT CARD */
-.about-card {
-    background: var(--card-bg);
-    color: var(--text);
-    border-radius: 15px;
-    padding: 45px;
-    margin-top: -50px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    border: 1px solid var(--border);
-}
+.about-card { background: var(--card-bg); color: var(--text); border-radius: 15px; padding: 45px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 1px solid var(--border); }
 .quote-container { border-left: 5px solid var(--primary); padding-left: 20px; margin: 25px 0; }
-.quote { font-style: italic; color: var(--text-dim); font-size: 1.1rem; }
+.quote { font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.5; }
+#quote-author { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
 
-/* SECTIONS */
-.section-title {
-    color: var(--primary);
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin: 60px 0 25px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--border);
-}
+.section-title { color: var(--primary); font-size: 1.6rem; font-weight: 700; margin: 60px 0 25px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
 .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 .article-box { background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: 0.3s; }
 
-/* ADMIN */
 .admin-card { display: none; background: #000; border: 2px dashed var(--primary); padding: 40px; border-radius: 20px; margin-top: 50px; }
 .push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; }
 
-/* FOOTER */
 .footer { text-align: center; padding: 80px 20px; margin-top: 100px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.03); }
 .footer-title { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--primary); letter-spacing: 2px; margin-bottom: 25px; }
 .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }

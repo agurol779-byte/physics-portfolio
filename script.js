@@ -5,7 +5,6 @@ const ADMIN_PASS = "physics123";
 let articles = [];
 let currentLang = 'en';
 
-// --- DİL VE SÖZ VERİLERİ ---
 const scientificQuotes = {
     en: [
         { q: "The most beautiful thing we can experience is the mysterious.", a: "Albert Einstein" },
@@ -22,14 +21,24 @@ const scientificQuotes = {
 };
 
 const translations = {
-    en: { about: "About Me", logs: "My popular science articles", contact: "Contact & Professional Network", desc: "I am a student who loves physics and is passionate about exploring the laws of the universe." },
-    tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ", desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim. Bilimin evreni anlamak için en güçlü araç olduğuna inanıyorum." }
+    en: { 
+        about: "About Me", logs: "My popular science articles", contact: "Contact & Professional Network",
+        desc: "I am a student who loves physics and is passionate about exploring the laws of the universe.",
+        school: "Bilkent Erzurum Laboratory School (BELS)",
+        status: "Student & Physics Researcher"
+    },
+    tr: { 
+        about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ",
+        desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim.",
+        school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)",
+        status: "Öğrenci & Fizik Araştırmacısı"
+    }
 };
 
 let selectedQuoteIndex = Math.floor(Math.random() * scientificQuotes.en.length);
 let lastQuoteUpdateTime = Date.now();
 
-// --- ARKA PLAN MOTORU (TÜM EKRANDA DOLAŞAN FORMÜLLER) ---
+// --- ARKA PLAN MOTORU ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let formulas = [];
@@ -39,15 +48,14 @@ function initParticles() {
     canvas.height = window.innerHeight;
     formulas = [];
     const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ", "Gμν", "λ", "Ω", "∫", "∮", "∑"];
-    
-    for(let i=0; i<65; i++) { // Formül yoğunluğu artırıldı
+    for(let i=0; i<65; i++) {
         formulas.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
             text: list[Math.floor(Math.random()*list.length)],
-            vx: (Math.random() - 0.5) * 1.5, // Hız artırıldı
+            vx: (Math.random() - 0.5) * 1.5,
             vy: (Math.random() - 0.5) * 1.5,
-            fontSize: Math.floor(Math.random() * 10 + 15) // Daha büyük font
+            fontSize: Math.floor(Math.random() * 10 + 15)
         });
     }
 }
@@ -56,7 +64,6 @@ function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const color = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
     ctx.fillStyle = color;
-    
     formulas.forEach(f => {
         ctx.font = `bold ${f.fontSize}px 'JetBrains Mono', monospace`;
         ctx.fillText(f.text, f.x, f.y);
@@ -67,16 +74,17 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- SİSTEM FONKSİYONLARI ---
+// --- SİSTEM ---
 function updateLanguage() {
     const t = translations[currentLang];
     document.getElementById('about-title').innerText = t.about;
     document.getElementById('logs-title').innerText = t.logs;
     document.getElementById('footer-title').innerText = t.contact;
     document.getElementById('about-desc').innerText = t.desc;
+    document.getElementById('edu-school').innerText = t.school;
+    document.getElementById('edu-status').innerText = t.status;
     document.getElementById('lang-btn').innerText = currentLang === 'en' ? 'TR' : 'EN';
     
-    // 20 dk kontrolü
     if (Date.now() - lastQuoteUpdateTime > 20 * 60 * 1000) {
         selectedQuoteIndex = Math.floor(Math.random() * scientificQuotes.en.length);
         lastQuoteUpdateTime = Date.now();
@@ -122,17 +130,18 @@ function render() {
     });
 }
 
-// ADMIN
 async function addArticle() {
     const check = prompt("Admin Key:");
     if (check !== ADMIN_PASS) return;
     const t = document.getElementById('post-title').value, p = document.getElementById('post-platform').value, u = document.getElementById('post-url').value;
     if(t && u) { articles.push({ t, p, u }); await sync(); }
 }
+
 async function deleteArticle(idx) {
     const check = prompt("Admin Key:"); if (check !== ADMIN_PASS) return;
     articles.splice(idx, 1); await sync();
 }
+
 async function sync() {
     await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY }, body: JSON.stringify(articles) });
     render();

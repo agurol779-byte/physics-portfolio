@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
     <canvas id="particleCanvas"></canvas>
 
     <header class="hero">
@@ -27,25 +26,31 @@
             <h2 id="about-title">About Me</h2>
             <div class="quote-container">
                 <p id="daily-quote" class="quote">"Exploring the cosmos..."</p>
-                <small id="quote-author" style="display: block; margin-top: 10px; color: var(--primary); font-family: 'JetBrains Mono'; opacity: 0.8;"></small>
+                <small id="quote-author"></small>
             </div>
-            <p id="about-desc" class="description">
-                I am a student who loves physics and is passionate about exploring the laws of the universe.
-            </p>
+            <p id="about-desc" class="description"></p>
+            
+            <div class="education-info">
+                <div class="edu-item">
+                    <span class="edu-icon">🎓</span>
+                    <span id="edu-school">Bilkent Erzurum Laboratory School (BELS)</span>
+                </div>
+                <div class="edu-item">
+                    <span class="edu-icon">🔬</span>
+                    <span id="edu-status">Student & Physics Researcher</span>
+                </div>
+            </div>
         </section>
 
         <h2 id="logs-title" class="section-title">My popular science articles</h2>
         <div class="article-grid" id="articles-grid"></div>
 
         <section class="admin-card" id="admin-panel">
-            <div class="admin-header">
-                <span class="admin-title">RESEARCH MANAGEMENT (ADMIN)</span>
-            </div>
             <div class="admin-form">
-                <input type="text" id="post-title" placeholder="Entry Title">
+                <input type="text" id="post-title" placeholder="Title">
                 <input type="text" id="post-platform" placeholder="Platform">
                 <input type="text" id="post-url" placeholder="URL">
-                <button onclick="addArticle()" class="push-btn">Push to Database</button>
+                <button onclick="addArticle()" class="push-btn">Push to DB</button>
             </div>
         </section>
     </main>
@@ -58,13 +63,9 @@
                 <a href="https://www.linkedin.com/in/ali-kemal-g%C3%BCrol-8780b13b9/" target="_blank" class="footer-link">LinkedIn</a>
                 <a href="https://medium.com/@aliekemalgurool" target="_blank" class="footer-link">Medium</a>
             </div>
-            <p class="copyright">
-                © 2026 Ali Kemal Gürol. All rights reserved. <br>
-                Theoretical Physics Portfolio v2.5.0
-            </p>
+            <p class="copyright">© 2026 Ali Kemal Gürol. Physics Portfolio v2.7.0</p>
         </div>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

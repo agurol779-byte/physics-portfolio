@@ -5,6 +5,8 @@ const ADMIN_PASS = "physics123";
 let articles = [];
 let currentLang = 'en';
 
+// --- SÖZ MANTIĞI VE VERİLERİ ---
+// Not: Listelerdeki sıralama birebir aynı olmalı!
 const scientificQuotes = {
     en: [
         { q: "The most beautiful thing we can experience is the mysterious.", a: "Albert Einstein" },
@@ -20,24 +22,35 @@ const scientificQuotes = {
     ]
 };
 
+let selectedQuoteIndex = Math.floor(Math.random() * scientificQuotes.en.length);
+let lastQuoteUpdateTime = Date.now();
+const QUOTE_DURATION = 20 * 60 * 1000; // 20 Dakika
+
+function updateQuoteDisplay() {
+    const currentTime = Date.now();
+    // 20 dk dolduysa yeni söz seç
+    if (currentTime - lastQuoteUpdateTime > QUOTE_DURATION) {
+        selectedQuoteIndex = Math.floor(Math.random() * scientificQuotes.en.length);
+        lastQuoteUpdateTime = currentTime;
+    }
+    
+    const quoteObj = scientificQuotes[currentLang][selectedQuoteIndex];
+    document.getElementById('daily-quote').innerText = `"${quoteObj.q}"`;
+    document.getElementById('quote-author').innerText = `— ${quoteObj.a}`;
+}
+
 const translations = {
     en: { 
-        about: "About Me", 
-        logs: "My popular science articles", 
-        contact: "Contact & Professional Network", 
-        theme: "Light Mode",
+        about: "About Me", logs: "My popular science articles", contact: "Contact & Professional Network", theme: "Light Mode",
         desc: "I am a student who loves physics and is passionate about exploring the laws of the universe. I believe that science is the most powerful tool we have to understand the world around us."
     },
     tr: { 
-        about: "Hakkımda", 
-        logs: "Popüler Bilim Makalelerim", 
-        contact: "İletişim ve Profesyonel Ağ", 
-        theme: "Gündüz Modu",
+        about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ", theme: "Gündüz Modu",
         desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim. Bilimin, etrafımızdaki dünyayı anlamak için sahip olduğumuz en güçlü araç olduğuna inanıyorum."
     }
 };
 
-// --- DİL VE SÖZ FONKSİYONU ---
+// --- DİL VE TEMA SİSTEMİ ---
 function updateLanguage() {
     const t = translations[currentLang];
     document.getElementById('about-title').innerText = t.about;
@@ -45,17 +58,9 @@ function updateLanguage() {
     document.getElementById('footer-title').innerText = t.contact;
     document.getElementById('about-desc').innerText = t.desc;
     document.getElementById('lang-btn').innerText = currentLang === 'en' ? 'TR' : 'EN';
-    setRandomQuote();
+    updateQuoteDisplay();
 }
 
-function setRandomQuote() {
-    const quotes = scientificQuotes[currentLang];
-    const random = quotes[Math.floor(Math.random() * quotes.length)];
-    document.getElementById('daily-quote').innerText = `"${random.q}"`;
-    document.getElementById('quote-author').innerText = `— ${random.a}`;
-}
-
-// --- TEMA VE NAVİGASYON ---
 document.getElementById('theme-btn').onclick = function() {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
@@ -68,7 +73,7 @@ document.getElementById('lang-btn').onclick = function() {
     updateLanguage();
 };
 
-// --- ARKA PLAN SİSTEMİ ---
+// --- ARKA PLAN (FORMÜLLER) ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let formulas = [];
@@ -77,7 +82,7 @@ function initParticles() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     formulas = [];
-    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ"];
+    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ", "Gμν"];
     for(let i=0; i<35; i++) {
         formulas.push({
             x: Math.random() * canvas.width,
@@ -100,7 +105,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- VERİ ÇEKME VE PANEL ---
+// --- VERİ YÖNETİMİ ---
 async function loadData() {
     try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -109,7 +114,7 @@ async function loadData() {
         const data = await res.json();
         articles = data.record || [];
         render();
-    } catch (e) { console.error("Error"); }
+    } catch (e) { console.error("API Load Error"); }
 }
 
 function render() {
@@ -127,7 +132,6 @@ function render() {
     });
 }
 
-// Admin İşlemleri
 async function addArticle() {
     const check = prompt("Admin Key:");
     if (check !== ADMIN_PASS) return;
@@ -156,6 +160,7 @@ async function sync() {
     render();
 }
 
+// --- INITIALIZE ---
 window.addEventListener('keydown', (e) => {
     if (e.key === '1') {
         const panel = document.getElementById('admin-panel');
@@ -163,5 +168,11 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-window.onload = () => { initParticles(); animate(); loadData(); updateLanguage(); };
+window.onload = () => { 
+    initParticles(); 
+    animate(); 
+    loadData(); 
+    updateLanguage(); 
+};
+
 window.onresize = initParticles;

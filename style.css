@@ -5,53 +5,50 @@
 }
 
 [data-theme="light"] {
-    --bg: #eaddca;        /* Mat Bej Arka Plan */
-    --hero-bg: #d2b48c;   /* Koyu Bej Header */
-    --card-bg: #f5f5dc;   /* Açık Bej Kartlar */
-    --text: #1a1a1a;      /* Koyu Yazı */
-    --text-dim: #4a4a4a;
-    --border: rgba(0, 0, 0, 0.1);
+    --bg: #eaddca !important;        /* Kesin Bej */
+    --hero-bg: #d2b48c !important;   /* Koyu Bej */
+    --card-bg: #f5f5dc !important;   /* Krem Kart */
+    --text: #1a1a1a !important;
+    --text-dim: #444444 !important;
+    --border: rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Beyazlığı Kırmak İçin Zorunlu Atama */
-[data-theme="light"] body, [data-theme="light"] .hero { background-color: var(--bg) !important; }
-[data-theme="light"] .about-card, [data-theme="light"] .article-box { background-color: var(--card-bg) !important; }
-
-body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.4s; overflow-x: hidden; }
-#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; pointer-events: none; }
+body { margin: 0; background-color: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.3s; overflow-x: hidden; }
+#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; pointer-events: none; }
 .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
-.hero { padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+.hero { background-color: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
 .top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
-.nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
+.nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 12px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.7rem; }
 
-.atom-icon-main { font-size: 6.5rem; color: var(--primary); text-shadow: 0 0 25px var(--primary); transition: 0.5s; margin-bottom: 15px; display: inline-block; }
-.atom-icon-main:hover { animation: atomVibration 0.1s infinite; transform: scale(1.1); }
-@keyframes atomVibration { 0% { transform: translate(0,0); } 33% { transform: translate(1px, -1px); } 66% { transform: translate(-1px, 1px); } 100% { transform: translate(0,0); } }
+.atom-icon-main { font-size: 6rem; color: var(--primary); text-shadow: 0 0 20px var(--primary); margin-bottom: 10px; display: inline-block; }
 
-.about-card { border-radius: 15px; padding: 45px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); border: 1px solid var(--border); }
-.quote-container { border-left: 5px solid var(--primary); padding-left: 20px; margin: 25px 0; }
-.quote { font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.5; }
-#quote-author { display: block; margin-top: 10px; color: var(--primary); font-family: 'JetBrains Mono'; font-size: 0.85rem; }
+.about-card { background-color: var(--card-bg); border-radius: 15px; padding: 40px; margin-top: -50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+.quote-container { border-left: 4px solid var(--primary); padding-left: 15px; margin: 20px 0; }
+.quote { font-style: italic; color: var(--text-dim); }
 
-.education-info { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; }
-.edu-item { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-#edu-school { font-family: 'JetBrains Mono'; font-weight: bold; }
+.education-info { margin-top: 25px; border-top: 1px solid var(--border); padding-top: 15px; }
+.edu-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 
-.section-title { color: var(--primary); font-size: 1.6rem; font-weight: 700; margin: 60px 0 25px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
-.article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-.article-box { border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: 0.3s; }
+.section-title { color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 5px; margin-top: 50px; }
+.article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.article-box { background-color: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 10px; position: relative; }
 
-.admin-card { display: none; background: #000; border: 2px dashed var(--primary); padding: 40px; border-radius: 20px; margin-top: 50px; }
-.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; }
+.delete-btn {
+    background: #ff4444; color: white; border: none; padding: 4px 8px; 
+    border-radius: 4px; cursor: pointer; font-size: 0.6rem; margin-top: 10px;
+    font-family: 'JetBrains Mono'; display: block;
+}
 
-.footer { text-align: center; padding: 80px 20px; margin-top: 100px; border-top: 1px solid var(--border); }
-.footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
-.footer-link { color: var(--text); text-decoration: none; font-weight: 500; }
-.copyright { font-size: 0.7rem; color: var(--text-dim); opacity: 0.6; }
+.admin-card { display: none; padding: 30px; border: 2px dashed var(--primary); margin-top: 40px; background: #000; }
+.admin-form input { width: 100%; padding: 10px; margin-bottom: 10px; }
+.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; }
+
+.footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border); margin-top: 50px; }
+.footer-link { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: bold; }
 
 .fixed-follow-btn {
-    position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: #000;
-    padding: 15px 30px; border-radius: 50px; font-weight: 800; text-decoration: none;
-    font-family: 'JetBrains Mono', monospace; box-shadow: 0 0 20px rgba(0, 210, 255, 0.4); z-index: 9999;
+    position: fixed; bottom: 25px; right: 25px; background: var(--primary); color: #000;
+    padding: 12px 25px; border-radius: 50px; font-weight: 800; text-decoration: none;
+    box-shadow: 0 0 15px var(--primary); z-index: 1000; font-family: 'JetBrains Mono';
 }

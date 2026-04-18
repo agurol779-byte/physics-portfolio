@@ -5,82 +5,44 @@
 }
 
 [data-theme="light"] {
-    --bg: #dccfb9 !important;        /* Daha koyu, tam mat bej */
-    --hero-bg: #cbb89d !important;   /* Arka planla uyumlu header */
-    --card-bg: #e6dac6 !important;   /* Bej üstünde hafif belli olan kartlar */
-    --text: #1a1a1a !important;
-    --text-dim: #3a3a3a !important;
-    --primary: #007acc !important;   /* Bej üstünde daha net görünen mavi */
-    --border: rgba(0, 0, 0, 0.1) !important;
+    --bg: #ffffff; --hero-bg: #f8fafc; --card-bg: #ffffff;
+    --text: #1a1a1a; --text-dim: #4b5563; --border: rgba(0, 210, 255, 0.3);
 }
 
-body { 
-    margin: 0; 
-    background-color: var(--bg) !important; 
-    color: var(--text); 
-    font-family: 'Space Grotesk', sans-serif; 
-    transition: 0.3s ease; 
-    min-height: 100vh;
-}
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; transition: 0.4s; overflow-x: hidden; }
+#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; pointer-events: none; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
-/* Tüm Arka Planı Kaplayan Formüller */
-#particleCanvas { 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100vw; height: 100vh; 
-    z-index: -1; 
-    opacity: 0.6; /* Formüllerin görünürlüğünü artırdık */
-}
+.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+.top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
+.nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
 
-.hero { 
-    background-color: var(--hero-bg); 
-    padding: 100px 20px; 
-    text-align: center; 
-    border-bottom: 1px solid var(--border);
-}
+.atom-icon-main { font-size: 6.5rem; color: var(--primary); text-shadow: 0 0 25px var(--primary); transition: 0.5s; margin-bottom: 15px; display: inline-block; }
+.atom-icon-main:hover { animation: atomVibration 0.1s infinite; transform: scale(1.1); }
+@keyframes atomVibration { 0% { transform: translate(0,0); } 33% { transform: translate(1px, -1px); } 66% { transform: translate(-1px, 1px); } 100% { transform: translate(0,0); } }
 
-/* Atom Simgesi Düzenlemesi */
-.atom-icon-main { 
-    font-size: 7rem; 
-    color: var(--primary); 
-    text-shadow: 0 0 30px var(--primary); 
-    margin-bottom: 20px; 
-    display: inline-block;
-    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); /* Her iki modda da netlik katar */
-}
+.about-card { background: var(--card-bg); color: var(--text); border-radius: 15px; padding: 45px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); border: 1px solid var(--border); position: relative; }
+.quote-container { border-left: 5px solid var(--primary); padding-left: 20px; margin: 25px 0; min-height: 80px; }
+.quote { font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.5; margin: 0; }
+#quote-author { display: block; margin-top: 10px; color: var(--primary); font-family: 'JetBrains Mono'; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
 
-.container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-
-.about-card { 
-    background-color: var(--card-bg) !important; 
-    border-radius: 20px; 
-    padding: 40px; 
-    margin-top: -60px; 
-    box-shadow: 0 15px 50px rgba(0,0,0,0.2); 
-    border: 1px solid var(--border); 
-}
-
-.quote-container { border-left: 5px solid var(--primary); padding-left: 20px; margin: 25px 0; }
 .education-info { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; }
+.edu-item { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+#edu-school { font-family: 'JetBrains Mono'; font-weight: bold; }
 
-.article-box { 
-    background-color: var(--card-bg) !important; 
-    border: 1px solid var(--border); 
-    padding: 25px; 
-    border-radius: 15px; 
-    transition: 0.3s;
-}
+.section-title { color: var(--primary); font-size: 1.6rem; font-weight: 700; margin: 60px 0 25px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+.article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.article-box { background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: 0.3s; }
 
-.delete-btn {
-    background: #e74c3c; color: white; border: none; padding: 6px 12px; 
-    border-radius: 5px; cursor: pointer; font-size: 0.7rem; margin-top: 15px;
-    font-family: 'JetBrains Mono';
-}
+.admin-card { display: none; background: #000; border: 2px dashed var(--primary); padding: 40px; border-radius: 20px; margin-top: 50px; }
+.admin-form input { width: 100%; padding: 10px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #333; }
+.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; }
 
-.nav-btn { background: transparent; border: 1.5px solid var(--text); color: var(--text); padding: 7px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.footer { text-align: center; padding: 80px 20px; border-top: 1px solid var(--border); margin-top: 100px; }
+.footer-link { color: var(--text); text-decoration: none; margin: 0 15px; font-weight: 600; }
 
 .fixed-follow-btn {
-    position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: #fff;
+    position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: #000;
     padding: 15px 30px; border-radius: 50px; font-weight: 800; text-decoration: none;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 9999;
+    font-family: 'JetBrains Mono'; box-shadow: 0 0 20px rgba(0, 210, 255, 0.4); z-index: 9999;
 }

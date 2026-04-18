@@ -10,7 +10,7 @@ const translations = {
     tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)", status: "Öğrenci & Fizik Araştırmacısı", follow: "TAKİP ET +", desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim." }
 };
 
-// --- ARKA PLAN ANİMASYONU ---
+// --- ANIMATION ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -38,7 +38,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- SİSTEM FONKSİYONLARI ---
+// --- CORE ---
 function updateLanguage() {
     const t = translations[currentLang];
     document.getElementById('about-title').innerText = t.about;
@@ -60,10 +60,12 @@ document.getElementById('theme-btn').onclick = () => {
 document.getElementById('lang-btn').onclick = () => { currentLang = currentLang === 'en' ? 'tr' : 'en'; updateLanguage(); };
 
 async function loadData() {
-    const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
-    const data = await res.json();
-    articles = data.record || [];
-    render();
+    try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+        const data = await res.json();
+        articles = data.record || [];
+        render();
+    } catch(e) { console.error("Load Error"); }
 }
 
 function render() {

@@ -5,40 +5,33 @@ const ADMIN_PASS = "2903";
 let articles = [];
 let currentLang = 'en';
 
+const physicsQuotes = [
+    { q: "Imagination is more important than knowledge.", a: "Albert Einstein" },
+    { q: "Nothing happens until something moves.", a: "Albert Einstein" },
+    { q: "Equations are just the shorthand of magic.", a: "Richard Feynman" },
+    { q: "Look up at the stars and not down at your feet.", a: "Stephen Hawking" },
+    { q: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.", a: "Richard Feynman" },
+    { q: "The first principle is that you must not fool yourself.", a: "Richard Feynman" }
+];
+
+// Söz değiştirme fonksiyonu
+function changeQuote() {
+    const quoteObj = physicsQuotes[Math.floor(Math.random() * physicsQuotes.length)];
+    const quoteEl = document.getElementById('daily-quote');
+    const authorEl = document.getElementById('quote-author');
+    
+    if(quoteEl && authorEl) {
+        quoteEl.innerText = `"${quoteObj.q}"`;
+        authorEl.innerText = `— ${quoteObj.a}`;
+    }
+}
+
+// --- CORE ---
 const translations = {
     en: { about: "About Me", logs: "My popular science articles", school: "Bilkent Erzurum Laboratory School (BELS)", status: "Student & Physics Researcher", follow: "FOLLOW +", desc: "I am a student who loves physics and is passionate about exploring the laws of the universe." },
     tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)", status: "Öğrenci & Fizik Araştırmacısı", follow: "TAKİP ET +", desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim." }
 };
 
-// --- ANIMATION ---
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-function initParticles() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particles = [];
-    for(let i=0; i<70; i++) {
-        particles.push({
-            x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-            vx: (Math.random()-0.5)*1, vy: (Math.random()-0.5)*1, size: Math.random()*2
-        });
-    }
-}
-
-function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-    particles.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-        p.x += p.vx; p.y += p.vy;
-        if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1;
-    });
-    requestAnimationFrame(animate);
-}
-
-// --- CORE ---
 function updateLanguage() {
     const t = translations[currentLang];
     document.getElementById('about-title').innerText = t.about;
@@ -59,6 +52,7 @@ document.getElementById('theme-btn').onclick = () => {
 
 document.getElementById('lang-btn').onclick = () => { currentLang = currentLang === 'en' ? 'tr' : 'en'; updateLanguage(); };
 
+// Veri işlemleri (v2.6.0 standardı)
 async function loadData() {
     try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
@@ -106,5 +100,12 @@ async function deleteArticle(idx) {
     render();
 }
 
+// Klavye kısayolu ve Başlangıç
 window.addEventListener('keydown', (e) => { if(e.key === '1') { const p = document.getElementById('admin-panel'); p.style.display = p.style.display==='none'?'block':'none'; } });
-window.onload = () => { initParticles(); animate(); loadData(); updateLanguage(); };
+
+window.onload = () => {
+    loadData();
+    updateLanguage();
+    changeQuote(); // İlk açılışta bir söz getir
+    setInterval(changeQuote, 20 * 60 * 1000); // Her 20 dakikada bir değiştir
+};

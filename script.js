@@ -5,18 +5,36 @@ const ADMIN_PASS = "2903";
 let articles = [];
 let currentLang = 'en';
 
-const physicsQuotes = [
-    { q: "Imagination is more important than knowledge.", a: "Albert Einstein" },
-    { q: "Nothing happens until something moves.", a: "Albert Einstein" },
-    { q: "Equations are just the shorthand of magic.", a: "Richard Feynman" },
-    { q: "Look up at the stars and not down at your feet.", a: "Stephen Hawking" },
-    { q: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.", a: "Richard Feynman" },
-    { q: "The first principle is that you must not fool yourself.", a: "Richard Feynman" }
-];
+// GERÇEK FİZİKÇİ SÖZLERİ (Çift Dilli)
+const physicsQuotes = {
+    en: [
+        { q: "Imagination is more important than knowledge.", a: "Albert Einstein" },
+        { q: "Nothing happens until something moves.", a: "Albert Einstein" },
+        { q: "Equations are just the shorthand of magic.", a: "Richard Feynman" },
+        { q: "Look up at the stars and not down at your feet.", a: "Stephen Hawking" },
+        { q: "The first principle is that you must not fool yourself.", a: "Richard Feynman" },
+        { q: "Nature uses only the longest threads to weave her patterns.", a: "Richard Feynman" }
+    ],
+    tr: [
+        { q: "Hayal gücü, bilgiden daha önemlidir.", a: "Albert Einstein" },
+        { q: "Bir şey hareket edene kadar hiçbir şey olmaz.", a: "Albert Einstein" },
+        { q: "Denklemler sadece büyünün kısaltmasıdır.", a: "Richard Feynman" },
+        { q: "Ayaklarınıza değil, yıldızlara bakın.", a: "Stephen Hawking" },
+        { q: "İlk ilke kendinizi kandırmamaktır.", a: "Richard Feynman" },
+        { q: "Doğa desenlerini örmek için sadece en uzun iplikleri kullanır.", a: "Richard Feynman" }
+    ]
+};
 
-// Söz değiştirme fonksiyonu
+let currentQuoteIndex = 0;
+
 function changeQuote() {
-    const quoteObj = physicsQuotes[Math.floor(Math.random() * physicsQuotes.length)];
+    // Rastgele bir index seç
+    currentQuoteIndex = Math.floor(Math.random() * physicsQuotes[currentLang].length);
+    displayQuote();
+}
+
+function displayQuote() {
+    const quoteObj = physicsQuotes[currentLang][currentQuoteIndex];
     const quoteEl = document.getElementById('daily-quote');
     const authorEl = document.getElementById('quote-author');
     
@@ -26,7 +44,7 @@ function changeQuote() {
     }
 }
 
-// --- CORE ---
+// --- ÇEVİRİ VE DİL ---
 const translations = {
     en: { about: "About Me", logs: "My popular science articles", school: "Bilkent Erzurum Laboratory School (BELS)", status: "Student & Physics Researcher", follow: "FOLLOW +", desc: "I am a student who loves physics and is passionate about exploring the laws of the universe." },
     tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)", status: "Öğrenci & Fizik Araştırmacısı", follow: "TAKİP ET +", desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim." }
@@ -41,18 +59,23 @@ function updateLanguage() {
     document.getElementById('edu-status').innerText = t.status;
     document.getElementById('follow-btn').innerText = t.follow;
     document.getElementById('lang-btn').innerText = currentLang === 'en' ? 'TR' : 'EN';
+    
+    displayQuote(); // Dil değişince sözü de o dile çevir
 }
 
+document.getElementById('lang-btn').onclick = () => { 
+    currentLang = currentLang === 'en' ? 'tr' : 'en'; 
+    updateLanguage(); 
+};
+
+// --- TEMA VE VERİ ---
 document.getElementById('theme-btn').onclick = () => {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
     html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('theme-btn').innerText = isDark ? "Dark Mode" : "Light Mode";
+    document.getElementById('theme-btn').innerText = isDark ? "Light Mode" : "Dark Mode";
 };
 
-document.getElementById('lang-btn').onclick = () => { currentLang = currentLang === 'en' ? 'tr' : 'en'; updateLanguage(); };
-
-// Veri işlemleri (v2.6.0 standardı)
 async function loadData() {
     try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
@@ -82,17 +105,17 @@ async function addArticle() {
     const u = document.getElementById('post-url').value;
     if(t && u) {
         articles.push({ t, u });
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
-            body: JSON.stringify(articles)
-        });
-        render();
+        await sync();
     }
 }
 
 async function deleteArticle(idx) {
     if(prompt("Admin Key:") !== ADMIN_PASS) return;
     articles.splice(idx, 1);
+    await sync();
+}
+
+async function sync() {
     await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
         body: JSON.stringify(articles)
@@ -100,12 +123,12 @@ async function deleteArticle(idx) {
     render();
 }
 
-// Klavye kısayolu ve Başlangıç
+// Klavye ve Başlatma
 window.addEventListener('keydown', (e) => { if(e.key === '1') { const p = document.getElementById('admin-panel'); p.style.display = p.style.display==='none'?'block':'none'; } });
 
 window.onload = () => {
     loadData();
     updateLanguage();
-    changeQuote(); // İlk açılışta bir söz getir
-    setInterval(changeQuote, 20 * 60 * 1000); // Her 20 dakikada bir değiştir
+    changeQuote(); // Rastgele söz seç
+    setInterval(changeQuote, 20 * 60 * 1000); // 20 dakikada bir değiştir
 };

@@ -10,7 +10,7 @@ const translations = {
     tr: { about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ", theme: "Gündüz Modu" }
 };
 
-// --- ARKA PLAN MOTORU ---
+// --- ARKA PLAN SAKİN FORMÜLLER ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let formulas = [];
@@ -19,7 +19,7 @@ function initParticles() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     formulas = [];
-    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ"];
+    const list = ["E=mc²", "F=ma", "Ψ", "ΔxΔp≥ħ/2", "c=λf", "PV=nRT", "∇·E=ρ/ε₀", "ħ", "Gμν"];
     for(let i=0; i<35; i++) {
         formulas.push({
             x: Math.random() * canvas.width,
@@ -43,7 +43,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- KONTROLLER ---
+// --- TEMA VE DİL ---
 document.getElementById('theme-btn').onclick = function() {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
@@ -57,9 +57,10 @@ document.getElementById('lang-btn').onclick = function() {
     document.getElementById('about-title').innerText = translations[currentLang].about;
     document.getElementById('logs-title').innerText = translations[currentLang].logs;
     document.querySelector('.footer-title').innerText = translations[currentLang].contact;
+    document.getElementById('about-desc').innerText = translations[currentLang].desc;
 };
 
-// --- DATABASE ---
+// --- VERİTABANI YÜKLEME ---
 async function loadData() {
     try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -68,7 +69,7 @@ async function loadData() {
         const data = await res.json();
         articles = data.record || [];
         render();
-    } catch (e) { console.error("API Error"); }
+    } catch (e) { console.error("Database Error"); }
 }
 
 function render() {
@@ -77,13 +78,41 @@ function render() {
     articles.forEach((art, index) => {
         grid.insertAdjacentHTML('beforeend', `
             <div class="article-box">
-                <div style="font-family:monospace; font-size:0.7rem; color:var(--primary); opacity:0.6; margin-bottom:10px;">// ${art.p || 'Physics'}</div>
+                <div style="font-family:monospace; font-size:0.7rem; color:var(--primary); opacity:0.6; margin-bottom:10px;">// SOURCE: ${art.p || 'Science'}</div>
                 <h3 style="margin:0 0 15px 0;">${art.t}</h3>
                 <a href="${art.u}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold;">READ_ARTICLE →</a>
                 <button onclick="deleteArticle(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.6rem; display:block; margin-top:15px; opacity:0.3;">[ERASE]</button>
             </div>
         `);
     });
+}
+
+// --- ADMIN İŞLEMLERİ ---
+async function addArticle() {
+    const check = prompt("Admin Key:");
+    if (check !== ADMIN_PASS) return alert("Unauthorized");
+    const t = document.getElementById('post-title').value;
+    const p = document.getElementById('post-platform').value;
+    const u = document.getElementById('post-url').value;
+    if(!t || !u) return alert("Empty fields");
+    articles.push({ t, p, u });
+    await sync();
+}
+
+async function deleteArticle(index) {
+    const check = prompt("Admin Key:");
+    if (check !== ADMIN_PASS) return alert("Unauthorized");
+    articles.splice(index, 1);
+    await sync();
+}
+
+async function sync() {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+        body: JSON.stringify(articles)
+    });
+    render();
 }
 
 // GİZLİ PANEL

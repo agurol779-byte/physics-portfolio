@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
     <canvas id="particleCanvas"></canvas>
 
     <header class="hero">
@@ -27,7 +26,7 @@
             <h2 id="about-title">About Me</h2>
             <div class="quote-container">
                 <p id="daily-quote" class="quote">"Exploring the cosmos..."</p>
-                <small id="quote-author"></small>
+                <small id="quote-author">— Physics Portfolio</small>
             </div>
             <p id="about-desc" class="description"></p>
             
@@ -43,35 +42,27 @@
             </div>
         </section>
 
-        <h2 id="logs-title" class="section-title">My popular science articles</h2>
+        <h2 id="logs-title" class="section-title">My Articles</h2>
         <div class="article-grid" id="articles-grid"></div>
 
         <section class="admin-card" id="admin-panel">
-            <div class="admin-header"><span class="admin-title">ADMIN PANEL</span></div>
             <div class="admin-form">
-                <input type="text" id="post-title" placeholder="Entry Title">
-                <input type="text" id="post-platform" placeholder="Platform">
-                <input type="text" id="post-url" placeholder="URL">
-                <button onclick="addArticle()" class="push-btn">Push to Database</button>
+                <input type="text" id="post-title" placeholder="Article Title">
+                <input type="text" id="post-url" placeholder="Article URL">
+                <button onclick="addArticle()" class="push-btn">Add to Database</button>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <div class="footer-content">
-            <h3 id="footer-title" class="footer-title">Contact & Professional Network</h3>
-            <div class="footer-links">
-                <a href="mailto:agurol779@gmail.com" class="footer-link">Email</a>
-                <a href="https://www.linkedin.com/in/ali-kemal-g%C3%BCrol-8780b13b9/" target="_blank" class="footer-link">LinkedIn</a>
-                <a href="https://medium.com/@aliekemalgurool" target="_blank" class="footer-link">Medium</a>
-            </div>
-            <p class="copyright">© 2026 Ali Kemal Gürol. Physics Portfolio v2.8.0</p>
+        <div class="footer-links">
+            <a href="mailto:agurol779@gmail.com" class="footer-link">Email</a>
+            <a href="https://www.linkedin.com/in/ali-kemal-g%C3%BCrol-8780b13b9/" target="_blank" class="footer-link">LinkedIn</a>
         </div>
+        <p class="copyright">© 2026 Ali Kemal Gürol.</p>
     </footer>
 
-    <a href="https://www.linkedin.com/in/ali-kemal-g%C3%BCrol-8780b13b9/" target="_blank" class="fixed-follow-btn" id="follow-btn">
-        FOLLOW +
-    </a>
+    <a href="https://www.linkedin.com/in/ali-kemal-g%C3%BCrol-8780b13b9/" target="_blank" class="fixed-follow-btn" id="follow-btn">FOLLOW +</a>
 
     <script src="script.js"></script>
 </body>

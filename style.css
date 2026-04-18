@@ -30,7 +30,7 @@ body {
 .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
 /* HERO & ATOM */
-.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative;}
 .top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
 .nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
 
@@ -43,7 +43,7 @@ body {
     display: inline-block;
 }
 .atom-icon-main:hover {
-    animation: atomVibration 0.15s infinite;
+    animation: atomVibration 0.1s infinite;
     text-shadow: 0 0 45px var(--primary);
     transform: scale(1.08);
 }
@@ -84,9 +84,9 @@ body {
 .push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; }
 
 /* FOOTER */
-.footer { text-align: center; padding: 80px 20px; margin-top: 100px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.05); }
-.footer-title { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--primary); letter-spacing: 2px; margin-bottom: 20px; }
-.footer-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 25px; }
-.footer-link { color: var(--text); text-decoration: none; font-weight: 500; transition: 0.3s; }
-.footer-link:hover { color: var(--primary); }
-.copyright { font-size: 0.7rem; color: var(--text-dim); opacity: 0.6; }
+.footer { text-align: center; padding: 80px 20px; margin-top: 100px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.03); }
+.footer-title { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--primary); letter-spacing: 2px; margin-bottom: 25px; }
+.footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
+.footer-link { color: var(--text); text-decoration: none; font-weight: 500; transition: 0.3s; border-bottom: 1px solid transparent; }
+.footer-link:hover { color: var(--primary); border-bottom: 1px solid var(--primary); }
+.copyright { font-size: 0.7rem; color: var(--text-dim); opacity: 0.6; line-height: 1.6; }

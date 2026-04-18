@@ -1,5 +1,4 @@
 :root {
-    /* Dark Mode - Varsayılan */
     --bg: #0a0a0a;
     --hero-bg: #111111;
     --card-bg: #1a1a1a;
@@ -11,9 +10,8 @@
 }
 
 [data-theme="light"] {
-    /* Light Mode */
     --bg: #ffffff;
-    --hero-bg: #f1f5f9;
+    --hero-bg: #f8fafc;
     --card-bg: #ffffff;
     --text: #1a1a1a;
     --text-dim: #4b5563;
@@ -27,39 +25,36 @@ body {
     overflow-x: hidden;
 }
 
-#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.8; }
+#particleCanvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
-.container { max-width: 900px; margin: 0 auto; padding: 20px; position: relative; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
-/* HERO BÖLÜMÜ */
-.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; position: relative; border-bottom: 1px solid var(--border); }
+/* HERO & ATOM */
+.hero { background: var(--hero-bg); padding: 80px 20px; text-align: center; border-bottom: 1px solid var(--border); }
 .top-nav { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; }
 .nav-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 5px 15px; border-radius: 5px; cursor: pointer; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
 
-/* 4. SEÇENEK: TEKNİK ATOM */
 .atom-icon-main {
-    font-size: 5.5rem;
+    font-size: 6.5rem;
     color: var(--primary);
-    text-shadow: 0 0 20px var(--primary);
+    text-shadow: 0 0 25px var(--primary);
     transition: 0.5s ease;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: inline-block;
 }
-
 .atom-icon-main:hover {
     animation: atomVibration 0.15s infinite;
-    text-shadow: 0 0 35px var(--primary);
-    transform: scale(1.05);
+    text-shadow: 0 0 45px var(--primary);
+    transform: scale(1.08);
 }
-
 @keyframes atomVibration {
     0% { transform: translate(0,0); }
-    25% { transform: translate(1px, -1px); }
-    50% { transform: translate(-1px, 1px); }
+    33% { transform: translate(1px, -1px); }
+    66% { transform: translate(-1px, 1px); }
     100% { transform: translate(0,0); }
 }
 
-/* ABOUT CARD: SİYAH/BEYAZ UYUMLU */
+/* ABOUT CARD */
 .about-card {
     background: var(--card-bg);
     color: var(--text);
@@ -69,11 +64,10 @@ body {
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     border: 1px solid var(--border);
 }
-
 .quote-container { border-left: 5px solid var(--primary); padding-left: 20px; margin: 25px 0; }
-.quote { font-style: italic; color: var(--text-dim); font-size: 1.15rem; }
+.quote { font-style: italic; color: var(--text-dim); font-size: 1.1rem; }
 
-/* YENİ BAŞLIK STİLİ */
+/* SECTIONS */
 .section-title {
     color: var(--primary);
     font-size: 1.6rem;
@@ -82,13 +76,17 @@ body {
     padding-bottom: 10px;
     border-bottom: 2px solid var(--border);
 }
-
 .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 .article-box { background: var(--card-bg); border: 1px solid var(--border); padding: 25px; border-radius: 12px; transition: 0.3s; }
-.article-box:hover { border-color: var(--primary); transform: translateY(-3px); }
 
-/* ADMIN PANEL: DASHED */
+/* ADMIN */
 .admin-card { display: none; background: #000; border: 2px dashed var(--primary); padding: 40px; border-radius: 20px; margin-top: 50px; }
-.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+.push-btn { width: 100%; background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; }
 
-.footer { text-align: center; padding: 60px; opacity: 0.4; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
+/* FOOTER */
+.footer { text-align: center; padding: 80px 20px; margin-top: 100px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.05); }
+.footer-title { font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--primary); letter-spacing: 2px; margin-bottom: 20px; }
+.footer-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 25px; }
+.footer-link { color: var(--text); text-decoration: none; font-weight: 500; transition: 0.3s; }
+.footer-link:hover { color: var(--primary); }
+.copyright { font-size: 0.7rem; color: var(--text-dim); opacity: 0.6; }

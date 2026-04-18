@@ -23,15 +23,17 @@ const scientificQuotes = {
 const translations = {
     en: { 
         about: "About Me", logs: "My popular science articles", contact: "Contact & Professional Network",
-        desc: "I am a student who loves physics and is passionate about exploring the laws of the universe.",
+        desc: "I am a student who loves physics and is passionate about exploring the laws of the universe. I believe that science is the key to understanding the cosmos.",
         school: "Bilkent Erzurum Laboratory School (BELS)",
-        status: "Student & Physics Researcher"
+        status: "Student & Physics Researcher",
+        follow: "FOLLOW +"
     },
     tr: { 
         about: "Hakkımda", logs: "Popüler Bilim Makalelerim", contact: "İletişim ve Profesyonel Ağ",
-        desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim.",
+        desc: "Fiziği seven ve evrenin yasalarını keşfetmeye tutkulu bir öğrenciyim. Bilimin, etrafımızdaki evreni anlamak için en temel anahtar olduğuna inanıyorum.",
         school: "Bilkent Erzurum Laboratuvar Lisesi (BELS)",
-        status: "Öğrenci & Fizik Araştırmacısı"
+        status: "Öğrenci & Fizik Araştırmacısı",
+        follow: "TAKİP ET +"
     }
 };
 
@@ -74,7 +76,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// --- SİSTEM ---
+// --- DİL VE SİSTEM ---
 function updateLanguage() {
     const t = translations[currentLang];
     document.getElementById('about-title').innerText = t.about;
@@ -83,6 +85,7 @@ function updateLanguage() {
     document.getElementById('about-desc').innerText = t.desc;
     document.getElementById('edu-school').innerText = t.school;
     document.getElementById('edu-status').innerText = t.status;
+    document.getElementById('follow-btn').innerText = t.follow;
     document.getElementById('lang-btn').innerText = currentLang === 'en' ? 'TR' : 'EN';
     
     if (Date.now() - lastQuoteUpdateTime > 20 * 60 * 1000) {
